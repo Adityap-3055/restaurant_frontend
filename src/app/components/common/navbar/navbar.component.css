@@ -1,0 +1,45 @@
+.navbar-custom {
+  background-color: #ab3434 !important; /* Matches your React Theme */
+  color: white;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+.logo {
+  font-family: "Cormorant", serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  cursor: pointer;
+  letter-spacing: 1px;
+  margin-left: 1rem;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.desktop-menu button {
+  border: 1px solid white;
+  margin-left: 10px;
+  color: white;
+}
+
+/* Mobile Drawer Styles */
+.mobile-drawer {
+  position: fixed;
+  top: 64px; /* Height of toolbar */
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.drawer-content {
+  background-color: white;
+  width: 200px;
+  height: 100%;
+  color: #ab3434;
+}

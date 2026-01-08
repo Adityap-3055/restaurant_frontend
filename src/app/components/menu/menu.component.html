@@ -1,0 +1,117 @@
+<div class="menu-container">
+  <h2 class="page-title">Full Menu</h2>
+
+  <div class="menu-grid">
+    <mat-card *ngFor="let item of paginatedItems" class="menu-card">
+      <img
+        mat-card-image
+        [src]="item.imageUrl"
+        [alt]="item.foodName"
+        class="food-image"
+      />
+
+      <mat-card-content>
+        <h3 class="food-name">{{ item.foodName }}</h3>
+        <p class="food-price">Price: ₹{{ item.foodPrice.toFixed(2) }}</p>
+
+        <div class="cart-controls">
+          <button
+            mat-icon-button
+            color="warn"
+            (click)="removeFromCart(item)"
+            [disabled]="getCartQuantity(item.id) === 0"
+          >
+            <mat-icon>remove_circle_outline</mat-icon>
+          </button>
+
+          <span class="quantity">{{ getCartQuantity(item.id) }}</span>
+
+          <button
+            mat-icon-button
+            style="color: green"
+            (click)="addToCart(item)"
+            [disabled]="getCartQuantity(item.id) >= 5"
+          >
+            <mat-icon>add_circle_outline</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-paginator
+    [length]="menuItems.length"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="[6, 12, 24]"
+    (page)="handlePageEvent($event)"
+    aria-label="Select page"
+  >
+  </mat-paginator>
+
+  <div class="order-section-container">
+    <mat-card class="order-card" elevation="12">
+      <div class="card-header">
+        <mat-icon>shopping_cart</mat-icon>
+        <h3>Cart</h3>
+      </div>
+
+      <ul class="cart-list">
+        <li *ngFor="let item of getCartList()">
+          {{ item.foodName }} - Qty: {{ item.qty }} - Price: ₹{{
+            (item.foodPrice! * item.qty).toFixed(2)
+          }}
+        </li>
+      </ul>
+      <p
+        *ngIf="getCartList().length === 0"
+        style="text-align: center; color: gray"
+      >
+        Cart is empty
+      </p>
+
+      <h3 class="total-price">Total: ₹{{ getCartTotal().toFixed(2) }}</h3>
+    </mat-card>
+
+    <mat-card class="order-card" elevation="12">
+      <div class="card-header">
+        <h3>Place Order</h3>
+      </div>
+
+      <form (ngSubmit)="placeOrder()">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Customer Name</mat-label>
+          <input
+            matInput
+            [(ngModel)]="customerName"
+            name="customerName"
+            required
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Phone Number</mat-label>
+          <input
+            matInput
+            [(ngModel)]="customerPhoneNumber"
+            name="customerPhoneNumber"
+            required
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Address</mat-label>
+          <input
+            matInput
+            [(ngModel)]="customerAddress"
+            name="customerAddress"
+            required
+          />
+        </mat-form-field>
+
+        <button mat-raised-button class="btn-order" type="submit">
+          Place Order
+        </button>
+      </form>
+    </mat-card>
+  </div>
+</div>

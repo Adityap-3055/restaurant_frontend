@@ -1,0 +1,85 @@
+.orders-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.page-title {
+  font-weight: bold;
+  color: #ab3434;
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.error-text {
+  color: red;
+  text-align: center;
+}
+
+.orders-list {
+  width: 100%;
+  max-width: 500px;
+}
+
+.order-card {
+  margin-bottom: 24px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #ab3434;
+}
+
+.order-id {
+  color: #ab3434;
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.customer-name {
+  font-weight: bold;
+  color: black;
+}
+
+.details {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.875rem;
+  margin-top: 8px;
+  margin-bottom: 16px;
+}
+
+.items-title {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-top: 16px;
+  margin-bottom: 8px;
+}
+
+.card-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 0 0 0;
+}
+
+.total-price {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.btn-delete {
+  background-color: #ab3434;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #8b2c2c;
+}

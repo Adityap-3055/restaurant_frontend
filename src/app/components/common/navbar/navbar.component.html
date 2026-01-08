@@ -1,0 +1,85 @@
+<mat-toolbar color="primary" class="navbar-custom">
+  <button mat-icon-button *ngIf="isMobile" (click)="toggleDrawer()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <span class="logo" routerLink="/">Gourmet Heaven</span>
+
+  <span class="spacer"></span>
+
+  <div *ngIf="!isMobile" class="desktop-menu">
+    <button mat-button routerLink="/menu">Menu</button>
+
+    <ng-container *ngIf="authService.isLoggedIn(); else guestUser">
+      <ng-container *ngIf="authService.getRole() === 'ROLE_CUSTOMER'">
+        <button mat-button routerLink="/my-orders">My Orders</button>
+      </ng-container>
+
+      <ng-container *ngIf="authService.getRole() === 'ROLE_ADMIN'">
+        <button mat-button routerLink="/all-orders">Orders</button>
+        <button mat-button routerLink="/admin">Admin</button>
+      </ng-container>
+
+      <button mat-button (click)="handleLogout()">Logout</button>
+    </ng-container>
+
+    <ng-template #guestUser>
+      <button mat-button routerLink="/login">Login</button>
+    </ng-template>
+  </div>
+</mat-toolbar>
+
+<div
+  class="mobile-drawer"
+  *ngIf="isMobile && isDrawerOpen"
+  (click)="toggleDrawer()"
+>
+  <mat-list
+    role="list"
+    (click)="$event.stopPropagation()"
+    class="drawer-content"
+  >
+    <mat-list-item role="listitem" routerLink="/menu" (click)="toggleDrawer()"
+      >Menu</mat-list-item
+    >
+
+    <ng-container *ngIf="authService.isLoggedIn()">
+      <ng-container *ngIf="authService.getRole() === 'ROLE_CUSTOMER'">
+        <mat-list-item
+          role="listitem"
+          routerLink="/my-orders"
+          (click)="toggleDrawer()"
+          >My Orders</mat-list-item
+        >
+      </ng-container>
+
+      <ng-container *ngIf="authService.getRole() === 'ROLE_ADMIN'">
+        <mat-list-item
+          role="listitem"
+          routerLink="/all-orders"
+          (click)="toggleDrawer()"
+          >Orders</mat-list-item
+        >
+        <mat-list-item
+          role="listitem"
+          routerLink="/admin"
+          (click)="toggleDrawer()"
+          >Admin</mat-list-item
+        >
+      </ng-container>
+
+      <mat-list-item role="listitem" (click)="handleLogout(); toggleDrawer()"
+        >Logout</mat-list-item
+      >
+    </ng-container>
+
+    <ng-container *ngIf="!authService.isLoggedIn()">
+      <mat-list-item
+        role="listitem"
+        routerLink="/login"
+        (click)="toggleDrawer()"
+        >Login</mat-list-item
+      >
+    </ng-container>
+  </mat-list>
+</div>

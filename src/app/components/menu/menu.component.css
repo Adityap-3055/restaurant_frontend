@@ -1,0 +1,109 @@
+.menu-container {
+  padding: 2rem;
+  background-color: #fff;
+}
+
+.page-title {
+  text-align: center;
+  margin-top: 2rem;
+  font-family: "Cormorant", serif;
+  font-size: 2.5rem;
+  color: #ab3434;
+}
+
+/* Grid Layout */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-bottom: 2rem;
+}
+
+.menu-card {
+  border: 1px solid #ab3434;
+  box-shadow: 3px 5px 5px #d9d7b6;
+}
+
+.food-image {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.food-name {
+  margin-top: 10px;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.food-price {
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.cart-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.quantity {
+  margin: 0 15px;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+/* Order Section */
+.order-section-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.order-card {
+  width: 380px;
+  padding: 20px;
+  border: 1px solid #ab3434;
+}
+
+.card-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ab3434;
+  margin-bottom: 1rem;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.btn-order {
+  background-color: #ab3434;
+  color: white;
+  width: 100%;
+  margin-top: 15px;
+  padding: 5px;
+}
+
+.cart-list {
+  padding-left: 0;
+  list-style: none;
+}
+
+.cart-list li {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.25rem;
+}
+
+.total-price {
+  text-align: center;
+  margin-top: 1rem;
+  border-top: 2px solid #ab3434;
+  padding-top: 1rem;
+}

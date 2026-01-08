@@ -1,8 +1,24 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+// src/app/app.config.ts
+import { ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient } from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideToastr } from 'ngx-toastr';
 
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes)]
+  providers: [
+    provideRouter(routes), // Enables Routing
+    provideHttpClient(), // Enables HTTP calls (replaces Axios)
+    provideAnimations(), // Required for Material UI animations
+    provideToastr({
+      // Global Toastr Configuration
+      positionClass: 'toast-top-center',
+      preventDuplicates: true,
+      timeOut: 3000, // Close after 3 seconds
+      closeButton: true,
+      progressBar: true,
+    }),
+  ],
 };
