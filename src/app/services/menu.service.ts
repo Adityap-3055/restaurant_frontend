@@ -75,4 +75,33 @@ export class MenuService {
       headers,
     });
   }
+
+  // --- ADMIN OPERATIONS ---
+
+  // Add a new menu item
+  addMenuItem(item: any): Observable<ApiResponse<MenuItem>> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.post<ApiResponse<MenuItem>>(`${this.menuUrl}/add`, item, {
+      headers,
+    });
+  }
+
+  // Update a menu item
+  updateMenuItem(id: number, item: any): Observable<ApiResponse<MenuItem>> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.put<ApiResponse<MenuItem>>(
+      `${this.menuUrl}/update/${id}`,
+      item,
+      { headers }
+    );
+  }
+
+  // Delete a menu item
+  deleteMenuItem(id: number): Observable<ApiResponse<string>> {
+    const headers = this.authService.getAuthHeaders();
+    return this.http.delete<ApiResponse<string>>(
+      `${this.menuUrl}/delete/${id}`,
+      { headers }
+    );
+  }
 }

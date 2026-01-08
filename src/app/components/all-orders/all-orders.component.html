@@ -1,0 +1,52 @@
+<div class="orders-container">
+  <h2 class="page-title">Admin: All Customer Orders</h2>
+
+  <div *ngIf="loading" class="spinner-container">
+    <mat-spinner diameter="50" color="warn"></mat-spinner>
+  </div>
+
+  <p *ngIf="errorMsg" class="error-text">{{ errorMsg }}</p>
+
+  <p *ngIf="!loading && orders.length === 0" style="text-align: center">
+    No orders found in the system.
+  </p>
+
+  <div class="orders-list">
+    <mat-card *ngFor="let order of orders" class="order-card" elevation="4">
+      <mat-card-header>
+        <mat-card-title class="order-id">Order #{{ order.id }}</mat-card-title>
+        <mat-card-subtitle class="customer-info">
+          <strong>{{ order.customerName }}</strong
+          ><br />
+          {{ order.customerPhoneNumber }}<br />
+          {{ order.customerAddress }}
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <mat-divider style="margin: 10px 0"></mat-divider>
+        <h3 class="items-title">Items:</h3>
+
+        <mat-list dense>
+          <mat-list-item *ngFor="let item of getGroupedItems(order.orderItems)">
+            <span matListItemTitle>{{ item.name }} (x{{ item.qty }})</span>
+            <span matListItemLine
+              >₹{{ (item.qty * item.price).toFixed(2) }}</span
+            >
+          </mat-list-item>
+        </mat-list>
+
+        <mat-divider style="margin: 10px 0"></mat-divider>
+      </mat-card-content>
+
+      <mat-card-actions class="card-actions">
+        <span class="total-price"
+          >Total: ₹{{ order.totalPrice.toFixed(2) }}</span
+        >
+        <button mat-raised-button color="warn" (click)="deleteOrder(order.id)">
+          Delete Order
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

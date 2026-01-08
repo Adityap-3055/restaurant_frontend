@@ -1,0 +1,23 @@
+<div class="section-container">
+  <h2 class="section-title">Pick from variety of cuisines</h2>
+
+  <div class="menu-grid">
+    <mat-card
+      *ngFor="let item of menuItems"
+      class="menu-card"
+      routerLink="/menu"
+    >
+      <img [src]="item.imageUrl" [alt]="item.foodName" class="food-image" />
+      <div class="card-content">
+        <h3>{{ item.foodName }}</h3>
+        <p>₹{{ item.foodPrice }}.00</p>
+      </div>
+    </mat-card>
+  </div>
+
+  <div class="button-container">
+    <button mat-raised-button class="btn-full-menu" routerLink="/menu">
+      View Full Menu
+    </button>
+  </div>
+</div>

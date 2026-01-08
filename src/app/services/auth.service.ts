@@ -73,4 +73,13 @@ export class AuthService {
     }
     return new HttpHeaders();
   }
+
+  // Create a new Admin user
+  createAdmin(user: User): Observable<ApiResponse<User>> {
+    const headers = this.getAuthHeaders();
+    // Reuses the same endpoint but sends Auth headers + ROLE_ADMIN
+    return this.http.post<ApiResponse<User>>(`${this.baseUrl}/adduser`, user, {
+      headers,
+    });
+  }
 }

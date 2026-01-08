@@ -1,0 +1,44 @@
+.about-container {
+  background-color: #ab3434; /* Matches React background */
+  padding: 2rem;
+  color: white;
+}
+
+.grid-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.grid-item {
+  flex: 1;
+  min-width: 300px;
+}
+
+.image-container img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.text-container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.about-title {
+  font-family: "Cormorant", serif;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.about-text {
+  font-family: "Cormorant", serif;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}

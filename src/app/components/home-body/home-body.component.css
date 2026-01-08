@@ -1,0 +1,47 @@
+.hero-container {
+  background-image: url("https://espacendesign.com/wp-content/uploads/2024/09/Restaurant-interior-designer-low-budget-1-scaled.webp");
+  background-size: cover;
+  background-position: center;
+  min-height: 85vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  padding: 0 20px;
+}
+
+.hero-title {
+  font-family: "Cormorant", serif;
+  font-weight: 700;
+  font-style: italic;
+  font-size: 8vh; /* Responsive font sizing */
+  margin-bottom: 1rem;
+}
+
+.hero-subtitle {
+  font-size: 1.5rem;
+}
+
+/* Mobile adjustments */
+@media (max-width: 600px) {
+  .hero-title {
+    font-size: 5vh;
+  }
+}
