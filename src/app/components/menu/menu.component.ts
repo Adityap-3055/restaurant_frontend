@@ -32,6 +32,7 @@ import { FooterComponent } from '../common/footer/footer.component';
 export class MenuComponent implements OnInit {
   menuItems: MenuItem[] = [];
   paginatedItems: MenuItem[] = [];
+  validationErrors: any = {};
 
   // Cart: Map of ItemID -> Quantity
   cartItems: { [key: number]: number } = {};
@@ -164,22 +165,25 @@ export class MenuComponent implements OnInit {
       orderItems: this.cartItems,
     };
 
+    // Reset errors
+    this.validationErrors = {};
+
     this.menuService.placeOrder(orderRequest).subscribe({
       next: (res) => {
         this.toastr.success('Order placed successfully!');
-        // Reset Form
         this.cartItems = {};
         this.customerName = '';
         this.customerPhoneNumber = '';
         this.customerAddress = '';
+        this.validationErrors = {}; // Clear errors
       },
       error: (err) => {
-        // Handle validation errors from backend
-        if (err.error && err.error.data) {
-          // If backend sends validation map
-          this.toastr.error('Please fix validation errors');
+        // Handle Backend Validation Map (400)
+        if (err.status === 400 && err.error && err.error.data) {
+          this.validationErrors = err.error.data; // Map fields to errors
+          this.toastr.error('Please fix the errors in the form.');
         } else {
-          this.toastr.error('Error placing order');
+          this.toastr.error('Error placing order. Try again.');
         }
       },
     });

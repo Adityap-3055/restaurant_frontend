@@ -59,13 +59,17 @@ export class LoginComponent {
     this.authService.login(this.user).subscribe({
       next: (response) => {
         this.toastr.success('Login Successful!', 'Welcome');
-        setTimeout(() => {
-          this.router.navigate(['/']); // Redirect to home
-        }, 1000);
+        setTimeout(() => this.router.navigate(['/']), 1000);
       },
       error: (err) => {
-        this.errorMsg = 'Invalid username or password';
-        this.toastr.error('Login Failed');
+        // Check if the backend sent a specific message in "status"
+        // Example: err.error.status might be "Invalid username or password"
+        if (err.error && err.error.status) {
+          this.errorMsg = err.error.status;
+        } else {
+          this.errorMsg = 'Login failed. Please check your credentials.';
+        }
+        this.toastr.error(this.errorMsg);
       },
     });
   }

@@ -48,6 +48,7 @@ import { ToastrService } from 'ngx-toastr';
 export class RegisterComponent {
   user: User = { username: '', password: '', roles: 'ROLE_CUSTOMER' };
   errorMsg: string = '';
+  validationErrors: any = {}; // <--- Object to hold field-specific errors
 
   constructor(
     private authService: AuthService,
@@ -56,19 +57,26 @@ export class RegisterComponent {
   ) {}
 
   onRegister() {
+    // Reset errors before request
+    this.validationErrors = {};
+    this.errorMsg = '';
+
     this.authService.register(this.user).subscribe({
       next: () => {
         this.toastr.success('Registration successful! Please login.');
-        setTimeout(() => {
-          this.router.navigate(['/login']);
-        }, 2000);
+        setTimeout(() => this.router.navigate(['/login']), 2000);
       },
       error: (err) => {
-        // Handle backend validation errors (400) or conflict (409)
-        if (err.status === 409) {
-          this.errorMsg = 'Username already exists';
+        // Handle Validation Errors (400)
+        if (err.status === 400 && err.error && err.error.data) {
+          this.validationErrors = err.error.data; // Capture the Map { username: "...", password: "..." }
+          this.toastr.error('Please fix the validation errors.');
+        }
+        // Handle Conflict (409) - e.g., Username exists
+        else if (err.status === 409) {
+          this.errorMsg = err.error.status; // "Username already exists!"
         } else {
-          this.errorMsg = 'Registration failed. Check details.';
+          this.errorMsg = 'Registration failed. Please try again.';
         }
       },
     });

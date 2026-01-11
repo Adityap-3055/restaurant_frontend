@@ -3,15 +3,21 @@
     <h2>Register</h2>
     <h3 style="color: #ab3434; font-family: arial">Join Gourmet Heaven</h3>
 
-    <p *ngIf="errorMsg" style="color: red">{{ errorMsg }}</p>
+    <p *ngIf="errorMsg" style="color: red; font-size: 0.9rem">{{ errorMsg }}</p>
 
     <form (ngSubmit)="onRegister()">
       <mat-form-field appearance="outline" style="width: 100%">
         <mat-label>Username</mat-label>
         <input matInput [(ngModel)]="user.username" name="username" required />
+        <mat-hint *ngIf="validationErrors.username" style="color: red">
+          {{ validationErrors.username }}
+        </mat-hint>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" style="width: 100%">
+      <mat-form-field
+        appearance="outline"
+        style="width: 100%; margin-top: 10px"
+      >
         <mat-label>Password</mat-label>
         <input
           matInput
@@ -20,6 +26,9 @@
           name="password"
           required
         />
+        <mat-hint *ngIf="validationErrors.password" style="color: red">
+          {{ validationErrors.password }}
+        </mat-hint>
       </mat-form-field>
 
       <button mat-raised-button class="btn-custom" type="submit">
