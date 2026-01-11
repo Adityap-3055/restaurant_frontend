@@ -1,0 +1,3 @@
+main.ts is entry point and with index.html. It ties app componenet to global configuration
+
+its a Standalone application (single page application)
