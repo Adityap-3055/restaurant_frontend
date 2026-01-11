@@ -43,65 +43,54 @@ export class MenuService {
 
   // Place a new order
   placeOrder(order: OrderRequest): Observable<ApiResponse<string>> {
-    const headers = this.authService.getAuthHeaders();
-    return this.http.post<ApiResponse<string>>(this.orderUrl, order, {
-      headers,
-    });
+    // const headers = this.authService.getAuthHeaders();
+    return this.http.post<ApiResponse<string>>(this.orderUrl, order);
   }
 
   // Get orders by username (for My Orders page)
   getOrdersByUsername(
     username: string
   ): Observable<ApiResponse<CustomerOrder[]>> {
-    const headers = this.authService.getAuthHeaders();
+    // const headers = this.authService.getAuthHeaders();
     return this.http.get<ApiResponse<CustomerOrder[]>>(
-      `http://localhost:8082/byUsername/${username}`,
-      { headers }
+      `http://localhost:8082/byUsername/${username}`
     );
   }
 
   // Get ALL orders (for Admin page)
   getAllOrders(): Observable<ApiResponse<CustomerOrder[]>> {
-    const headers = this.authService.getAuthHeaders();
-    return this.http.get<ApiResponse<CustomerOrder[]>>(this.orderUrl, {
-      headers,
-    });
+    // const headers = this.authService.getAuthHeaders();
+    return this.http.get<ApiResponse<CustomerOrder[]>>(this.orderUrl);
   }
 
   // Delete an order
   deleteOrder(id: number): Observable<ApiResponse<string>> {
-    const headers = this.authService.getAuthHeaders();
-    return this.http.delete<ApiResponse<string>>(`${this.orderUrl}/${id}`, {
-      headers,
-    });
+    // const headers = this.authService.getAuthHeaders();
+    return this.http.delete<ApiResponse<string>>(`${this.orderUrl}/${id}`);
   }
 
   // --- ADMIN OPERATIONS ---
 
   // Add a new menu item
   addMenuItem(item: any): Observable<ApiResponse<MenuItem>> {
-    const headers = this.authService.getAuthHeaders();
-    return this.http.post<ApiResponse<MenuItem>>(`${this.menuUrl}/add`, item, {
-      headers,
-    });
+    // const headers = this.authService.getAuthHeaders();
+    return this.http.post<ApiResponse<MenuItem>>(`${this.menuUrl}/add`, item);
   }
 
   // Update a menu item
   updateMenuItem(id: number, item: any): Observable<ApiResponse<MenuItem>> {
-    const headers = this.authService.getAuthHeaders();
+    // const headers = this.authService.getAuthHeaders();
     return this.http.put<ApiResponse<MenuItem>>(
       `${this.menuUrl}/update/${id}`,
-      item,
-      { headers }
+      item
     );
   }
 
   // Delete a menu item
   deleteMenuItem(id: number): Observable<ApiResponse<string>> {
-    const headers = this.authService.getAuthHeaders();
+    // const headers = this.authService.getAuthHeaders();
     return this.http.delete<ApiResponse<string>>(
-      `${this.menuUrl}/delete/${id}`,
-      { headers }
+      `${this.menuUrl}/delete/${id}`
     );
   }
 }

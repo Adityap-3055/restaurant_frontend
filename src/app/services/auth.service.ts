@@ -21,34 +21,32 @@ export class AuthService {
 
   // 2. LOGIN
   // Matches React: axios.post('http://localhost:8082/user/login', { ... })
-  login(user: User): Observable<ApiResponse<string>> {
-    return this.http
-      .post<ApiResponse<string>>(`${this.baseUrl}/login`, user)
-      .pipe(
-        tap((response) => {
-          if (response && response.data) {
-            // Store credentials just like the React app did
-            // Note: Storing plain passwords is risky, but we are replicating your exact current logic.
-            localStorage.setItem('username', user.username);
-            if (user.password) localStorage.setItem('password', user.password);
-            localStorage.setItem('role', response.data); // data contains the role string
-          }
-        })
-      );
+  login(user: User): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.baseUrl}/login`, user).pipe(
+      tap((response) => {
+        if (response && response.data) {
+          // Store Token instead of password!
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('username', response.data.username);
+          localStorage.setItem('role', response.data.role);
+        }
+      })
+    );
   }
 
   // 3. LOGOUT
   logout(): void {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
-    localStorage.removeItem('role');
-    // Optional: Redirect to login is usually handled by the component
+    localStorage.clear(); // Clears token and user data
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('token');
   }
 
   // 4. HELPER METHODS
   // Used to check if user is logged in for Navbar logic
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('username');
+    return !!this.getToken();
   }
 
   getRole(): string | null {

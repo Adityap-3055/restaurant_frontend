@@ -29,7 +29,7 @@ export const adminGuard = () => {
     return true;
   } else {
     toastr.error('Access Denied. Admins only.');
-    router.navigate(['/']); // Kick them back to Home
+    router.navigate(['/']); 
     return false;
   }
 };
