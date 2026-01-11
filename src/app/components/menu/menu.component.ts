@@ -10,6 +10,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MenuService } from '../../services/menu.service';
 import { MenuItem, OrderRequest } from '../../models/models';
 import { ToastrService } from 'ngx-toastr';
+import { FooterComponent } from '../common/footer/footer.component';
 
 @Component({
   selector: 'app-menu',
@@ -23,6 +24,7 @@ import { ToastrService } from 'ngx-toastr';
     MatInputModule,
     MatPaginatorModule,
     MatGridListModule,
+    FooterComponent,
   ],
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.css'],
