@@ -12,18 +12,27 @@
 
   <div class="menu-grid">
     <mat-card *ngFor="let item of menuItems" class="admin-card">
-      <div class="card-row">
-        <img [src]="item.imageUrl" class="thumb-img" />
-        <div class="card-info">
-          <h3>{{ item.foodName }}</h3>
-          <p>₹{{ item.foodPrice }}</p>
+      <div class="card-content-wrapper">
+        <div class="image-box">
+          <img
+            [src]="item.imageUrl"
+            [alt]="item.foodName"
+            (error)="
+              item.imageUrl =
+                'https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png'
+            "
+          />
+        </div>
+        <div class="text-info">
+          <h3 class="food-name">{{ item.foodName }}</h3>
+          <p class="food-price">₹{{ item.foodPrice.toFixed(2) }}</p>
         </div>
       </div>
-
       <div class="card-actions">
         <button
           mat-raised-button
           color="primary"
+          class="btn-update"
           (click)="openUpdateItem(item)"
         >
           Update
@@ -39,14 +48,31 @@
 <ng-template #addAdminDialog>
   <h2 mat-dialog-title>Add Admin</h2>
   <mat-dialog-content>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Username</mat-label>
-      <input matInput [(ngModel)]="newAdmin.username" />
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" [(ngModel)]="newAdmin.password" />
-    </mat-form-field>
+    <div class="dialog-box">
+      <mat-form-field
+        appearance="outline"
+        class="full-width"
+        subscriptSizing="dynamic"
+      >
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="newAdmin.username" />
+        <mat-hint *ngIf="adminErrors.username" style="color: red">
+          {{ adminErrors.username }}
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width"
+        subscriptSizing="dynamic"
+      >
+        <mat-label>Password</mat-label>
+        <input matInput type="password" [(ngModel)]="newAdmin.password" />
+        <mat-hint *ngIf="adminErrors.password" style="color: red">
+          {{ adminErrors.password }}
+        </mat-hint>
+      </mat-form-field>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
@@ -59,14 +85,31 @@
 <ng-template #addItemDialog>
   <h2 mat-dialog-title>Add Menu Item</h2>
   <mat-dialog-content>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Food Name</mat-label>
-      <input matInput [(ngModel)]="newItem.foodName" />
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Price</mat-label>
-      <input matInput type="number" [(ngModel)]="newItem.foodPrice" />
-    </mat-form-field>
+    <div class="dialog-box">
+      <mat-form-field
+        appearance="outline"
+        class="full-width"
+        subscriptSizing="dynamic"
+      >
+        <mat-label>Food Name</mat-label>
+        <input matInput [(ngModel)]="newItem.foodName" />
+        <mat-hint *ngIf="addItemErrors.foodName" style="color: red">
+          {{ addItemErrors.foodName }}
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width"
+        subscriptSizing="dynamic"
+      >
+        <mat-label>Food Price</mat-label>
+        <input matInput type="number" [(ngModel)]="newItem.foodPrice" />
+        <mat-hint *ngIf="addItemErrors.foodPrice" style="color: red">
+          {{ addItemErrors.foodPrice }}
+        </mat-hint>
+      </mat-form-field>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
@@ -77,21 +120,38 @@
 </ng-template>
 
 <ng-template #updateItemDialog>
-  <h2 mat-dialog-title>Update Item</h2>
+  <h2 mat-dialog-title>Update Menu Item</h2>
   <mat-dialog-content>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Food Name</mat-label>
-      <input matInput [(ngModel)]="selectedItem.foodName" />
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Price</mat-label>
-      <input matInput type="number" [(ngModel)]="selectedItem.foodPrice" />
-    </mat-form-field>
+    <div class="dialog-box">
+      <mat-form-field
+        appearance="outline"
+        class="full-width"
+        subscriptSizing="dynamic"
+      >
+        <mat-label>Food Name</mat-label>
+        <input matInput [(ngModel)]="selectedItem.foodName" />
+        <mat-hint *ngIf="updateItemErrors.foodName" style="color: red">
+          {{ updateItemErrors.foodName }}
+        </mat-hint>
+      </mat-form-field>
+
+      <mat-form-field
+        appearance="outline"
+        class="full-width"
+        subscriptSizing="dynamic"
+      >
+        <mat-label>Food Price</mat-label>
+        <input matInput type="number" [(ngModel)]="selectedItem.foodPrice" />
+        <mat-hint *ngIf="updateItemErrors.foodPrice" style="color: red">
+          {{ updateItemErrors.foodPrice }}
+        </mat-hint>
+      </mat-form-field>
+    </div>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-button mat-dialog-close>Cancel</button>
     <button mat-raised-button color="primary" (click)="submitUpdateItem()">
-      Update
+      Submit
     </button>
   </mat-dialog-actions>
 </ng-template>

@@ -2,10 +2,9 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog'; // For Popups
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MenuService } from '../../services/menu.service';
@@ -23,7 +22,6 @@ import { ToastrService } from 'ngx-toastr';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatGridListModule,
     MatCardModule,
     MatIconModule,
   ],
@@ -36,12 +34,17 @@ export class AdminComponent implements OnInit {
   // Form Models
   newAdmin: User = { username: '', password: '', roles: 'ROLE_ADMIN' };
   newItem: any = { foodName: '', foodPrice: '', imageUrl: '' };
-  selectedItem: any = {}; // For updates
+  selectedItem: any = {};
 
-  // Access the Dialog Templates defined in HTML
+  // Validation Errors
+  adminErrors: any = {};
+  addItemErrors: any = {};
+  updateItemErrors: any = {};
+
   @ViewChild('addAdminDialog') addAdminDialog!: TemplateRef<any>;
   @ViewChild('addItemDialog') addItemDialog!: TemplateRef<any>;
   @ViewChild('updateItemDialog') updateItemDialog!: TemplateRef<any>;
+  // Removed deleteConfirmDialog ViewChild
 
   constructor(
     private menuService: MenuService,
@@ -57,12 +60,10 @@ export class AdminComponent implements OnInit {
   fetchMenuItems(): void {
     this.menuService.getMenuItems().subscribe({
       next: async (response) => {
-        // Reuse the image fetching logic
         const items = response.data;
         this.menuItems = await Promise.all(
           items.map(async (item) => {
             if (!item.imageUrl) {
-              // Try local logic or fetch from Pexels
               try {
                 const pexelsData = await this.menuService
                   .fetchImageFromPexels(item.foodName)
@@ -86,27 +87,38 @@ export class AdminComponent implements OnInit {
 
   openAddAdmin() {
     this.newAdmin = { username: '', password: '', roles: 'ROLE_ADMIN' };
+    this.adminErrors = {};
     this.dialog.open(this.addAdminDialog);
   }
 
   submitAddAdmin() {
+    this.adminErrors = {};
     this.authService.createAdmin(this.newAdmin).subscribe({
       next: () => {
         this.toastr.success('Admin added successfully!');
         this.dialog.closeAll();
       },
-      error: (err) =>
-        this.toastr.error(err.error?.message || 'Failed to add admin'),
+      error: (err) => {
+        if (err.status === 400 && err.error && err.error.data) {
+          this.adminErrors = err.error.data;
+          this.toastr.error('Please fix the errors.');
+        } else if (err.status === 409) {
+          this.toastr.error(err.error.status || 'Username already exists');
+        } else {
+          this.toastr.error('Failed to add admin');
+        }
+      },
     });
   }
 
   openAddItem() {
     this.newItem = { foodName: '', foodPrice: '' };
+    this.addItemErrors = {};
     this.dialog.open(this.addItemDialog);
   }
 
   async submitAddItem() {
-    // 1. Fetch Image URL first
+    this.addItemErrors = {};
     try {
       const pexelsData = await this.menuService
         .fetchImageFromPexels(this.newItem.foodName)
@@ -119,23 +131,31 @@ export class AdminComponent implements OnInit {
         'https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png';
     }
 
-    // 2. Send to Backend
     this.menuService.addMenuItem(this.newItem).subscribe({
       next: () => {
         this.toastr.success('Menu item added!');
         this.fetchMenuItems();
         this.dialog.closeAll();
       },
-      error: (err) => this.toastr.error('Failed to add item'),
+      error: (err) => {
+        if (err.status === 400 && err.error && err.error.data) {
+          this.addItemErrors = err.error.data;
+          this.toastr.error('Please fix the errors.');
+        } else {
+          this.toastr.error('Failed to add item');
+        }
+      },
     });
   }
 
   openUpdateItem(item: MenuItem) {
-    this.selectedItem = { ...item }; // Clone to avoid live editing
+    this.selectedItem = { ...item };
+    this.updateItemErrors = {};
     this.dialog.open(this.updateItemDialog);
   }
 
   submitUpdateItem() {
+    this.updateItemErrors = {};
     this.menuService
       .updateMenuItem(this.selectedItem.id, this.selectedItem)
       .subscribe({
@@ -144,18 +164,31 @@ export class AdminComponent implements OnInit {
           this.fetchMenuItems();
           this.dialog.closeAll();
         },
-        error: (err) => this.toastr.error('Failed to update item'),
+        error: (err) => {
+          if (err.status === 400 && err.error && err.error.data) {
+            this.updateItemErrors = err.error.data;
+            this.toastr.error('Please fix the errors.');
+          } else {
+            this.toastr.error('Failed to update item');
+          }
+        },
       });
   }
 
+  // --- REVERTED DELETE LOGIC ---
   deleteItem(id: number) {
-    if (!confirm('Delete this item?')) return;
+    // Original Browser Popup
+    if (!confirm('Are you sure you want to delete this item?')) return;
+
     this.menuService.deleteMenuItem(id).subscribe({
       next: () => {
         this.toastr.success('Item deleted!');
         this.fetchMenuItems();
       },
-      error: (err) => this.toastr.error('Failed to delete item'),
+      error: (err) => {
+        const msg = err.error?.message || err.statusText || 'Unknown Error';
+        this.toastr.error(`Failed to delete item: ${msg}`);
+      },
     });
   }
 }
